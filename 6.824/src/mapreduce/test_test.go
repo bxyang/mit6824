@@ -130,6 +130,7 @@ func port(suffix string) string {
 }
 
 func setup() *Master {
+    fmt.Println("set up")
 	files := makeInputs(nMap)
 	master := port("master")
 	mr := Distributed("test", files, nReduce, master)
@@ -144,6 +145,7 @@ func cleanup(mr *Master) {
 }
 
 func TestSequentialSingle(t *testing.T) {
+    fmt.Printf("seq single\n")
 	mr := Sequential("test", makeInputs(1), 1, MapFunc, ReduceFunc)
 	mr.Wait()
 	check(t, mr.files)

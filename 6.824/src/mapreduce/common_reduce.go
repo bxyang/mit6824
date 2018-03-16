@@ -1,5 +1,14 @@
 package mapreduce
 
+import (
+    "encoding/json"
+    "io/ioutil"
+    "strings"
+    "sort"
+    "os"
+)
+
+
 func doReduce(
 	jobName string, // the name of the whole MapReduce job
 	reduceTask int, // which reduce task this is
@@ -44,4 +53,40 @@ func doReduce(
 	//
 	// Your code here (Part I).
 	//
+
+    var kv KeyValue     
+    
+    data := make(map[string][]string)
+    keys := make(sort.StringSlice, 0)
+
+    for i := 0; i < nMap; i++ {
+        mFileName := reduceName(jobName, i, reduceTask)        
+        content, _ := ioutil.ReadFile(mFileName)
+        arrs := strings.Split(string(content), "\n")
+        for j, item := range arrs {
+            if j == len(arrs) - 1 {
+                break
+            }
+            dec := json.NewDecoder(strings.NewReader(item))
+            dec.Decode(&kv)
+
+            _, ok := data[kv.Key]
+            if !ok {
+                data[kv.Key] = make([]string, 0)
+                keys = append(keys, kv.Key)
+            }
+            data[kv.Key] = append(data[kv.Key], kv.Value)
+        }
+    }
+    sort.Sort(keys)
+    
+    ofile, _ := os.Create(outFile)
+    enc := json.NewEncoder(ofile)
+    
+    for _, k := range(keys) {
+        v := reduceF(k, data[k])
+        enc.Encode(KeyValue{k, v})
+    }
+    
+    ofile.Close()
 }
