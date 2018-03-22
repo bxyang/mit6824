@@ -40,9 +40,9 @@ type fetchState struct {
 }
 
 func (f *fetchState) CheckAndMark(url string) bool {
-	defer f.mu.Unlock()
+	//defer f.mu.Unlock()
 
-	f.mu.Lock()
+	//f.mu.Lock()
 	if f.fetched[url] {
 		return true
 	}
@@ -130,7 +130,7 @@ func main() {
 	//CrawlSerial("http://golang.org/", fetcher, make(map[string]bool))
 
 	//fmt.Printf("=== ConcurrentMutex ===\n")
-	//CrawlConcurrentMutex("http://golang.org/", fetcher, mkFetchState())
+	CrawlConcurrentMutex("http://golang.org/", fetcher, mkFetchState())
 
 	fmt.Printf("=== ConcurrentChannel ===\n")
 	CrawlConcurrentChannel("http://golang.org/", fetcher)

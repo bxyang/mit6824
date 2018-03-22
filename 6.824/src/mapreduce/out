@@ -1,0 +1,14 @@
+=== RUN   TestParallelBasic
+set up
+/var/tmp/824-1000/mr20142-master: Starting Map/Reduce task test
+Schedule: 20 mapPhase tasks (10 I/Os)
+read srv /var/tmp/824-1000/mr20142-worker1 done
+/var/tmp/824-1000/mr20142-worker1: given mapPhase task #0 on file 824-mrinput-0.txt (nios: 10)
+/var/tmp/824-1000/mr20142-worker1: mapPhase task #0 done
+read srv /var/tmp/824-1000/mr20142-worker0 done
+/var/tmp/824-1000/mr20142-worker0: given mapPhase task #1 on file 824-mrinput-1.txt (nios: 10)
+/var/tmp/824-1000/mr20142-worker0: mapPhase task #1 done
+task 0 done
+task 1 done
+signal: killed
+FAIL	_/home/yangbaoxing/mit6824/6.824/src/mapreduce	193.164s
